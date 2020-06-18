@@ -1,0 +1,120 @@
+Tue Mar 10 12:59:47 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 0. The simulation is unstable. Time = 0.1150.
+
+Wed Mar 11 12:27:19 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 2. The simulation is unstable. Time = 8.8750.
+
+Wed Mar 11 12:40:06 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 1. The simulation is unstable. Time = 2.5950.
+
+Wed Mar 11 12:40:28 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 1. The simulation is unstable. Time = 1.3700.
+
+Wed Mar 11 12:41:02 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 1. The simulation is unstable. Time = 1.4700.
+
+Wed Mar 11 12:41:31 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 1. The simulation is unstable. Time = 1.4700.
+
+Wed Mar 11 12:42:32 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 2. The simulation is unstable. Time = 1.5100.
+
+Wed Mar 11 12:44:05 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 2. The simulation is unstable. Time = 1.5200.
+
+Wed Mar 11 12:45:01 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 1. The simulation is unstable. Time = 2.1500.
+
+Wed Mar 11 12:47:41 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 2. The simulation is unstable. Time = 0.2250.
+
+Wed Mar 11 12:48:01 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 1. The simulation is unstable. Time = 6.6900.
+
+Thu Mar 12 14:04:54 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 0. The simulation is unstable. Time = 0.0300.
+
+Thu Mar 12 14:05:13 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 0. The simulation is unstable. Time = 0.0350.
+
+Thu Mar 12 14:05:46 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 0. The simulation is unstable. Time = 0.0700.
+
+Thu Mar 12 15:15:37 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 3. The simulation is unstable. Time = 0.1450.
+
+Tue May  5 16:04:57 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:06:03 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:10:50 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:11:49 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:15:56 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:21:32 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:23:17 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:24:05 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:25:49 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:27:04 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:28:53 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:30:07 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:31:44 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:33:12 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May  5 16:46:31 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Wed May 13 15:27:20 2020
+ERROR: Expired activation key
+
+Fri May 15 16:23:04 2020
+WARNING: Nan, Inf or huge value in QACC at DOF 9. The simulation is unstable. Time = 0.0590.
+
+Tue May 19 17:04:49 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May 19 17:05:17 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May 19 17:07:57 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May 19 17:08:49 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May 19 17:10:32 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May 19 17:11:10 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May 19 17:12:33 2020
+WARNING: Unknown warning type Time = 0.0010.
+
+Tue May 19 17:15:08 2020
+WARNING: Unknown warning type Time = 0.0010.
+

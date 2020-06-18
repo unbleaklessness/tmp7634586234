@@ -1,0 +1,341 @@
+<mujoco model="gyroPendulum">
+    <compiler angle="radian" />
+
+    <option gravity="0 0 -9.82" impratio="5" iterations="100" noslip_iterations="250" timestep="0.001">
+        <flag sensornoise="disable" />
+    </option>
+
+    
+
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    <asset>
+        <hfield file="ground_field.png" name="ground_field" size="5 5 0.5 0.1" />
+    </asset>
+
+    <worldbody>
+        <light cutoff="4" diffuse="1 0.5 1" dir="-0.9 -0.3 -2.5 " directional="true" exponent="20" pos="0.9 0.3 2.5" specular="0 0.5 0" />
+
+        <geom hfield="ground_field" name="ground" pos="2 0 -0.54" rgba="0.25 0.26 0.25 1" size="2 1 2" type="hfield" />
+        <site name="start_point" pos="0 0 -0.54" rgba=" 0 1 0.5 1" size="0.02 1 0.01" type="box" />
+
+        <body name="pendulum" pos="0 0 0">
+
+            <site pos="0.06 0 0" rgba="1 0 0 0.75" size="0.06 0.006 0.006" type="box" />
+<site pos="0 0.06 0" rgba="0 1 0 0.75" size="0.006 0.06 0.006" type="box" />
+<site pos="0 0 0.06" rgba="0 0 1 0.75" size="0.006 0.006 0.06" type="box" />
+            <freejoint name="free" />
+            <site name="free_site" pos="0 0 0" rgba="1 0 0 1" size="0.01 0.01 0.01" type="box" />
+
+            <body euler="0 0 0" name="rod">
+                <site name="rod_cylinder" pos="0 0 0.25" rgba="0 0 1 0.8" size="0.015 0.25" type="cylinder" />
+                <inertial diaginertia="0.679450 0.7101237 0.475422" mass="14.9451" pos="0 0 0.4166666666666667" />
+
+                <site pos="0.06 0 0" rgba="1 0 0 0.75" size="0.06 0.006 0.006" type="box" />
+<site pos="0 0.06 0" rgba="0 1 0 0.75" size="0.006 0.06 0.006" type="box" />
+<site pos="0 0 0.06" rgba="0 0 1 0.75" size="0.006 0.006 0.06" type="box" />
+
+                <site pos="-0.3 0 0" rgba="1 0 0 1" size="0.01 0.01 0.01" type="box" />
+
+                
+
+                <body euler="0 0 3.141592653589793" pos="0 0.125 0.5215">
+                    <body euler="0.5235987755982988 0 0" name="gyro1">
+                        <site pos="0.06 0 0" rgba="1 0 0 0.75" size="0.06 0.006 0.006" type="box" />
+<site pos="0 0.06 0" rgba="0 1 0 0.75" size="0.006 0.06 0.006" type="box" />
+<site pos="0 0 0.06" rgba="0 0 1 0.75" size="0.006 0.006 0.06" type="box" />
+                        <joint armature="0" axis="1 0 0" limited="true" name="gyro1_act" range="-1.0471975511965979 2.0943951023931953" />
+                        <inertial diaginertia="0.0134496 0.008588196 0.01483955" mass="2.458" pos="0 0 0" />
+                        <site rgba="0 1 1 0.5" size="0.12 0.12 0.004" type="box" />
+                        <body name="gyro1_wheel">
+                            <joint axis="0 0 1" name="gyro1_m" />
+                            <inertial diaginertia="0.004934016 0.004934016 0.009771652" mass="2.011" pos="0 0 0" />
+                            <site pos="0 0 0" rgba="1 0 1 0.7" size="0.1 0.004" type="cylinder" />
+                            <site pos="0 0 0.008" rgba="0 1 1 1" size="0.002 0.1 0.004" type="box" />
+                        </body>
+                    </body>
+                </body>
+
+                <body euler="0 0 0" pos="0 -0.125 0.5215">
+                    <body euler="0.17453292519943295 0 0" name="gyro2">
+                        <site pos="0.06 0 0" rgba="1 0 0 0.75" size="0.06 0.006 0.006" type="box" />
+<site pos="0 0.06 0" rgba="0 1 0 0.75" size="0.006 0.06 0.006" type="box" />
+<site pos="0 0 0.06" rgba="0 0 1 0.75" size="0.006 0.006 0.06" type="box" />
+                        <joint armature="0" axis="1 0 0" limited="true" name="gyro2_act" range="-1.3962634015954636 1.7453292519943295" />
+                        <inertial diaginertia="0.0134496 0.008588196 0.01483955" mass="2.458" pos="0 0 0" />
+                        <site rgba="0 1 1 0.5" size="0.12 0.12 0.004" type="box" />
+                        <body name="gyro2_wheel">
+                            <joint axis="0 0 1" name="gyro2_m" />
+                            <inertial diaginertia="0.004934016 0.004934016 0.009771652" mass="2.011" pos="0 0 0" />
+                            <site pos="0 0 0" rgba="1 0 1 0.7" size="0.1 0.004" type="cylinder" />
+                            <site pos="0 0 0.008" rgba="0 1 1 1" size="0.002 0.1 0.004" type="box" />
+                        </body>
+                    </body>
+                </body>
+
+                
+
+                <body euler="0 0 4.71238898038469" pos="-0.125 0 0.3065">
+                    <body euler="0.0 0 0" name="gyro3">
+                        <site pos="0.06 0 0" rgba="1 0 0 0.75" size="0.06 0.006 0.006" type="box" />
+<site pos="0 0.06 0" rgba="0 1 0 0.75" size="0.006 0.06 0.006" type="box" />
+<site pos="0 0 0.06" rgba="0 0 1 0.75" size="0.006 0.006 0.06" type="box" />
+                        <joint armature="0" axis="1 0 0" frictionloss="0" limited="true" name="gyro3_act" range="-1.5707963267948966 1.5707963267948966" />
+                        <inertial diaginertia="0.0134496 0.008588196 0.01483955" mass="2.458" pos="0 0 0" />
+                        <site rgba="0 1 1 0.5" size="0.12 0.12 0.004" type="box" />
+                        <body name="gyro3_wheel">
+                            <joint axis="0 0 1" name="gyro3_m" />
+                            <inertial diaginertia="0.004934016 0.004934016 0.009771652" mass="2.011" pos="0 0 0" />
+                            <site pos="0 0 0" rgba="1 0 1 0.7" size="0.1 0.004" type="cylinder" />
+                            <site pos="0 0 0.008" rgba="0 1 1 1" size="0.002 0.1 0.004" type="box" />
+                        </body>
+                    </body>
+                </body>
+
+                <body euler="0 0 1.5707963267948966" pos="0.125 0 0.3065">
+                    <body euler="0.0 0 0" name="gyro4">
+                        <site pos="0.06 0 0" rgba="1 0 0 0.75" size="0.06 0.006 0.006" type="box" />
+<site pos="0 0.06 0" rgba="0 1 0 0.75" size="0.006 0.06 0.006" type="box" />
+<site pos="0 0 0.06" rgba="0 0 1 0.75" size="0.006 0.006 0.06" type="box" />
+                        <joint armature="0" axis="1 0 0" frictionloss="0" limited="true" name="gyro4_act" range="-1.5707963267948966 1.5707963267948966" />
+                        <inertial diaginertia="0.0134496 0.008588196 0.01483955" mass="2.458" pos="0 0 0" />
+                        <site rgba="0 1 1 0.5" size="0.12 0.12 0.004" type="box" />
+                        <body name="gyro4_wheel">
+                            <joint axis="0 0 1" name="gyro4_m" />
+                            <inertial diaginertia="0.004934016 0.004934016 0.009771652" mass="2.011" pos="0 0 0" />
+                            <site pos="0 0 0" rgba="1 0 1 0.7" size="0.1 0.004" type="cylinder" />
+                            <site pos="0 0 0.008" rgba="0 1 1 1" size="0.002 0.1 0.004" type="box" />
+                        </body>
+                    </body>
+                </body>
+
+                
+                
+
+                
+                <body name="left_leg" pos="0 0.04405 0">
+                    <joint armature="2" axis="0 1 0" frictionloss="0" name="left_upper_joint" />
+                    <inertial diaginertia="0.008704007 0.007703296 0.002209976" mass="1.59" pos="0 0.01027 -0.2214" />
+                    <site name="left_thigh" pos="0 0 -0.125" size="0.02 0.125" type="cylinder" />
+                    <body name="left_lower_part" pos="0 0 -0.25">
+                        <joint armature="2" axis="0 1 0" frictionloss="0" name="left_lower_joint" />
+                        <inertial diaginertia="0.006216238 0.006185340 0.000584330" mass="0.75" pos="0 0 -0.19469" />
+                        <geom mass="0" pos="0 0 -0.125" rgba="1 1 0 0.5" size="0.02 0.125" type="capsule" />
+                        <site name="left_contact" pos="0 0 -0.125" rgba="0 1 1 1" size="0.02 0.125" type="capsule" />
+                    </body>
+                </body>
+
+                
+                <body name="right_leg" pos="0 -0.04405 0">
+                    <joint armature="2" axis="0 1 0" frictionloss="0" name="right_upper_joint" />
+                    <inertial diaginertia="0.008704007 0.007703296 0.002209976" mass="1.59" pos="0 -0.01027 -0.2214" />
+                    <site name="right_thigh" pos="0 0 -0.125" size="0.02 0.125" type="cylinder" />
+                    <body name="right_lower_part" pos="0 0 -0.25">
+                        <joint armature="2" axis="0 1 0" frictionloss="0" name="right_lower_joint" />
+                        <inertial diaginertia="0.006216238 0.006185340 0.000584330" mass="0.75" pos="0 0 -0.19469" />
+                        <geom mass="0" pos="0 0 -0.125" rgba="1 1 0 0.5" size="0.02 0.125" type="capsule" />
+                        <site name="right_contact" pos="0 0 -0.125" rgba="0 1 1 1" size="0.02 0.125" type="capsule" />
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        
+
+        <velocity joint="gyro1_act" kv="32" name="gyro1_act" />
+        <velocity joint="gyro1_m" kv="2" name="gyro1_m" />
+
+        <velocity joint="gyro2_act" kv="32" name="gyro2_act" />
+        <velocity joint="gyro2_m" kv="2" name="gyro2_m" />
+
+        <velocity joint="gyro3_act" kv="32" name="gyro3_act" />
+        <velocity joint="gyro3_m" kv="2" name="gyro3_m" />
+
+        <velocity joint="gyro4_act" kv="32" name="gyro4_act" />
+        <velocity joint="gyro4_m" kv="2" name="gyro4_m" />
+
+        <motor gear="0 0 0 0 0 1" joint="free" name="rod_act1" />
+        <motor gear="1 0 0 0 0 0" joint="free" name="rod_act2" />
+
+        <motor joint="left_upper_joint" name="lt_act" />
+        <motor joint="left_lower_joint" name="ls_act" />
+        <motor joint="right_upper_joint" name="rt_act" />
+        <motor joint="right_lower_joint" name="rs_act" />
+    </actuator>
+
+    <sensor>
+        <gyro site="free_site" />
+
+        <jointpos joint="gyro1_act" />
+        <jointvel joint="gyro1_act" />
+
+        <jointpos joint="gyro1_m" />
+        <jointvel joint="gyro1_m" />
+
+        <jointpos joint="gyro2_act" />
+        <jointvel joint="gyro2_act" />
+
+        <jointpos joint="gyro2_m" />
+        <jointvel joint="gyro2_m" />
+
+        <jointpos joint="gyro3_act" />
+
+        <jointpos joint="left_upper_joint" />
+        <jointvel joint="left_upper_joint" />
+
+        <jointpos joint="left_lower_joint" />
+        <jointvel joint="left_lower_joint" />
+
+        <jointpos joint="right_upper_joint" />
+        <jointvel joint="right_upper_joint" />
+
+        <jointpos joint="right_lower_joint" />
+        <jointvel joint="right_lower_joint" />
+    </sensor>
+
+    <contact>
+        
+        
+        
+        
+        <exclude body1="pendulum" body2="rod" />
+<exclude body1="pendulum" body2="gyro1" />
+<exclude body1="pendulum" body2="gyro2" />
+<exclude body1="pendulum" body2="gyro3" />
+<exclude body1="pendulum" body2="gyro4" />
+<exclude body1="pendulum" body2="gyro1_wheel" />
+<exclude body1="pendulum" body2="gyro2_wheel" />
+<exclude body1="pendulum" body2="gyro3_wheel" />
+<exclude body1="pendulum" body2="gyro4_wheel" />
+<exclude body1="pendulum" body2="left_leg" />
+<exclude body1="pendulum" body2="right_leg" />
+<exclude body1="pendulum" body2="left_lower_part" />
+<exclude body1="pendulum" body2="right_lower_part" />
+<exclude body1="rod" body2="gyro1" />
+<exclude body1="rod" body2="gyro2" />
+<exclude body1="rod" body2="gyro3" />
+<exclude body1="rod" body2="gyro4" />
+<exclude body1="rod" body2="gyro1_wheel" />
+<exclude body1="rod" body2="gyro2_wheel" />
+<exclude body1="rod" body2="gyro3_wheel" />
+<exclude body1="rod" body2="gyro4_wheel" />
+<exclude body1="rod" body2="left_leg" />
+<exclude body1="rod" body2="right_leg" />
+<exclude body1="rod" body2="left_lower_part" />
+<exclude body1="rod" body2="right_lower_part" />
+<exclude body1="gyro1" body2="gyro2" />
+<exclude body1="gyro1" body2="gyro3" />
+<exclude body1="gyro1" body2="gyro4" />
+<exclude body1="gyro1" body2="gyro1_wheel" />
+<exclude body1="gyro1" body2="gyro2_wheel" />
+<exclude body1="gyro1" body2="gyro3_wheel" />
+<exclude body1="gyro1" body2="gyro4_wheel" />
+<exclude body1="gyro1" body2="left_leg" />
+<exclude body1="gyro1" body2="right_leg" />
+<exclude body1="gyro1" body2="left_lower_part" />
+<exclude body1="gyro1" body2="right_lower_part" />
+<exclude body1="gyro2" body2="gyro3" />
+<exclude body1="gyro2" body2="gyro4" />
+<exclude body1="gyro2" body2="gyro1_wheel" />
+<exclude body1="gyro2" body2="gyro2_wheel" />
+<exclude body1="gyro2" body2="gyro3_wheel" />
+<exclude body1="gyro2" body2="gyro4_wheel" />
+<exclude body1="gyro2" body2="left_leg" />
+<exclude body1="gyro2" body2="right_leg" />
+<exclude body1="gyro2" body2="left_lower_part" />
+<exclude body1="gyro2" body2="right_lower_part" />
+<exclude body1="gyro3" body2="gyro4" />
+<exclude body1="gyro3" body2="gyro1_wheel" />
+<exclude body1="gyro3" body2="gyro2_wheel" />
+<exclude body1="gyro3" body2="gyro3_wheel" />
+<exclude body1="gyro3" body2="gyro4_wheel" />
+<exclude body1="gyro3" body2="left_leg" />
+<exclude body1="gyro3" body2="right_leg" />
+<exclude body1="gyro3" body2="left_lower_part" />
+<exclude body1="gyro3" body2="right_lower_part" />
+<exclude body1="gyro4" body2="gyro1_wheel" />
+<exclude body1="gyro4" body2="gyro2_wheel" />
+<exclude body1="gyro4" body2="gyro3_wheel" />
+<exclude body1="gyro4" body2="gyro4_wheel" />
+<exclude body1="gyro4" body2="left_leg" />
+<exclude body1="gyro4" body2="right_leg" />
+<exclude body1="gyro4" body2="left_lower_part" />
+<exclude body1="gyro4" body2="right_lower_part" />
+<exclude body1="gyro1_wheel" body2="gyro2_wheel" />
+<exclude body1="gyro1_wheel" body2="gyro3_wheel" />
+<exclude body1="gyro1_wheel" body2="gyro4_wheel" />
+<exclude body1="gyro1_wheel" body2="left_leg" />
+<exclude body1="gyro1_wheel" body2="right_leg" />
+<exclude body1="gyro1_wheel" body2="left_lower_part" />
+<exclude body1="gyro1_wheel" body2="right_lower_part" />
+<exclude body1="gyro2_wheel" body2="gyro3_wheel" />
+<exclude body1="gyro2_wheel" body2="gyro4_wheel" />
+<exclude body1="gyro2_wheel" body2="left_leg" />
+<exclude body1="gyro2_wheel" body2="right_leg" />
+<exclude body1="gyro2_wheel" body2="left_lower_part" />
+<exclude body1="gyro2_wheel" body2="right_lower_part" />
+<exclude body1="gyro3_wheel" body2="gyro4_wheel" />
+<exclude body1="gyro3_wheel" body2="left_leg" />
+<exclude body1="gyro3_wheel" body2="right_leg" />
+<exclude body1="gyro3_wheel" body2="left_lower_part" />
+<exclude body1="gyro3_wheel" body2="right_lower_part" />
+<exclude body1="gyro4_wheel" body2="left_leg" />
+<exclude body1="gyro4_wheel" body2="right_leg" />
+<exclude body1="gyro4_wheel" body2="left_lower_part" />
+<exclude body1="gyro4_wheel" body2="right_lower_part" />
+<exclude body1="left_leg" body2="right_leg" />
+<exclude body1="left_leg" body2="left_lower_part" />
+<exclude body1="left_leg" body2="right_lower_part" />
+<exclude body1="right_leg" body2="left_lower_part" />
+<exclude body1="right_leg" body2="right_lower_part" />
+<exclude body1="left_lower_part" body2="right_lower_part" />
+
+    </contact>
+</mujoco>
