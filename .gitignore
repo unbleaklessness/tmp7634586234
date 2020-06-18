@@ -1,0 +1,16 @@
+slprj/
+
+*.autosave
+*.slxc
+*.mat
+
+mjkey.txt
+MUJOCO_LOG.TXT
+MuJoCo.cpp
+MuJoCo.mexw64
+MuJoCo.mexw64.pdb
+glfw3.dll
+mujoco200.dll
+MuJoCoModel.xml
+
+!trajectory.mat

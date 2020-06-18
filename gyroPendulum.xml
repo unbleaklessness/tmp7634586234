@@ -1,0 +1,240 @@
+<mujoco model="gyroPendulum">
+    <compiler angle="radian" />
+
+    <option timestep="0.001" iterations="100" gravity="0 0 -9.82" impratio="5" noslip_iterations="250">
+        <flag sensornoise="disable" />
+    </option>
+
+    ${{ import math }}$
+
+    ${{ gyro_speed = 10000 * 2 * math.pi / 60 }}$
+
+    ${{ gyro1_zero = 30 / 180 * math.pi }}$
+    ${{ gyro2_zero = 10 / 180 * math.pi }}$
+    ${{ gyro3_zero = 0 / 180 * math.pi }}$
+    ${{ gyro4_zero = 0 / 180 * math.pi }}$
+
+    ${{ rod_x_zero = 0 / 180 * math.pi }}$
+    ${{ rod_y_zero = 0 / 180 * math.pi }}$
+
+    ${{ actuators_limit = math.pi / 2 }}$
+    ${{ gyro1_upper_limit = actuators_limit + gyro1_zero }}$
+    ${{ gyro1_lower_limit = -actuators_limit + gyro1_zero }}$
+    ${{ gyro2_upper_limit = actuators_limit + gyro2_zero }}$
+    ${{ gyro2_lower_limit = -actuators_limit + gyro2_zero }}$
+    ${{ gyro3_upper_limit = actuators_limit + gyro3_zero }}$
+    ${{ gyro3_lower_limit = -actuators_limit + gyro3_zero }}$
+    ${{ gyro4_upper_limit = actuators_limit + gyro4_zero }}$
+    ${{ gyro4_lower_limit = -actuators_limit + gyro4_zero }}$
+
+    ${{ rod_length = 0.5 }}$
+    ${{ rod_radius = 0.015 }}$
+
+    ${{ gyros_pair_1_z_position = 0.5215 }}$
+    ${{ gyros_pair_2_z_position = 0.3065 }}$
+
+    ${{ gyro_box_size_xy = 0.24 }}$
+    ${{ gyro_box_size_z = 0.008 }}$
+
+    ${{ gyro_disc_radius = 0.1 }}$
+    ${{ gyro_disc_height = 0.008 }}$
+
+    ${{ between_gyro_y_distance = 0.25 }}$
+    ${{ between_gyro_x_distance = 0.25 }}$
+
+    ${{ between_legs_distance = 0.0881 }}$
+    ${{ thigh_length = 0.25 }}$
+    ${{ thigh_radius = 0.02 }}$
+    ${{ shin_length = 0.25 }}$
+    ${{ shin_radius = thigh_radius }}$
+
+    ${{ basis_site_scale = 0.06 }}$
+    ${{ basis_site_x = '<site type="box" pos="{0} 0 0" size="{0} {1} {1}" rgba="1 0 0 0.75" />'.format(basis_site_scale, basis_site_scale / 10) }}$
+    ${{ basis_site_y = '<site type="box" pos="0 {0} 0" size="{1} {0} {1}" rgba="0 1 0 0.75" />'.format(basis_site_scale, basis_site_scale / 10) }}$
+    ${{ basis_site_z = '<site type="box" pos="0 0 {0}" size="{1} {1} {0}" rgba="0 0 1 0.75" />'.format(basis_site_scale, basis_site_scale / 10) }}$
+    ${{ basis_site = '\n'.join([basis_site_x, basis_site_y, basis_site_z]) }}$
+
+    <asset>
+        <hfield name="ground_field" file="ground_field.png" size="5 5 0.5 0.1" />
+    </asset>
+
+    <worldbody>
+        <light directional="true" cutoff="4" exponent="20" diffuse="1 0.5 1" specular="0 0.5 0" pos="0.9 0.3 2.5" dir="-0.9 -0.3 -2.5 "/>
+
+        <geom name="ground" type="hfield" hfield="ground_field" pos="2 0 -0.54" size="2 1 2" rgba="0.25 0.26 0.25 1" />
+        <site name="start_point" type="box" pos="0 0 -0.54" size="0.02 1 0.01" rgba=" 0 1 0.5 1"/>
+
+        <body name="pendulum" pos="0 0 0">
+
+            #{{ basis_site }}#
+            <freejoint name="free" />
+            <site name="free_site" type="box" size="0.01 0.01 0.01" pos="0 0 0" rgba="1 0 0 1" />
+
+            <body name="rod" euler="0 0 0">
+                <site name="rod_cylinder" type="cylinder" pos="0 0 #{{ rod_length / 2 }}#" size="#{{ rod_radius }}# #{{ rod_length / 2 }}#" rgba="0 0 1 0.8"/>
+                <inertial pos="0 0 #{{ rod_length / 1.2 }}#" mass="14.9451" diaginertia="0.679450 0.7101237 0.475422" />
+
+                #{{ basis_site }}#
+
+                <site type="box" pos="-0.3 0 0" size="0.01 0.01 0.01" rgba="1 0 0 1" />
+
+                ${{ gyros_armature = 0 }}$
+
+                <body pos="0 #{{ between_gyro_y_distance / 2 }}# #{{ gyros_pair_1_z_position }}#" euler="0 0 #{{ math.pi }}#">
+                    <body name="gyro1" euler="#{{ gyro1_zero }}# 0 0">
+                        #{{ basis_site }}#
+                        <joint name="gyro1_act" axis="1 0 0" armature="#{{ gyros_armature }}#" limited="true" range="#{{ gyro1_lower_limit }}# #{{ gyro1_upper_limit }}#" />
+                        <inertial pos="0 0 0" mass="2.458" diaginertia="0.0134496 0.008588196 0.01483955" />
+                        <site type="box" size="#{{ gyro_box_size_xy / 2 }}# #{{ gyro_box_size_xy / 2 }}# #{{ gyro_box_size_z / 2 }}#" rgba="0 1 1 0.5" />
+                        <body name="gyro1_wheel">
+                            <joint name="gyro1_m" axis="0 0 1" velocity0="#{{ -gyro_speed }}#" />
+                            <inertial pos="0 0 0" mass="2.011" diaginertia="0.004934016 0.004934016 0.009771652" />
+                            <site type="cylinder" size="#{{ gyro_disc_radius }}# #{{ gyro_disc_height / 2 }}#" pos="0 0 0" rgba="1 0 1 0.7" />
+                            <site type="box" pos="0 0 #{{ gyro_disc_height }}#" size="#{{ gyro_disc_radius / 50 }}# #{{ gyro_disc_radius }}# #{{ gyro_box_size_z / 2 }}#" rgba="0 1 1 1"/>
+                        </body>
+                    </body>
+                </body>
+
+                <body pos="0 #{{ -between_gyro_y_distance / 2 }}# #{{ gyros_pair_1_z_position }}#" euler="0 0 0">
+                    <body name="gyro2" euler="#{{ gyro2_zero }}# 0 0">
+                        #{{ basis_site }}#
+                        <joint name="gyro2_act" axis="1 0 0" armature="#{{ gyros_armature }}#" limited="true" range="#{{ gyro2_lower_limit }}# #{{ gyro2_upper_limit }}#" />
+                        <inertial pos="0 0 0" mass="2.458" diaginertia="0.0134496 0.008588196 0.01483955" />
+                        <site type="box" size="#{{ gyro_box_size_xy / 2 }}# #{{ gyro_box_size_xy / 2 }}# #{{ gyro_box_size_z / 2 }}#" rgba="0 1 1 0.5" />
+                        <body name="gyro2_wheel">
+                            <joint name="gyro2_m" axis="0 0 1" velocity0="#{{ gyro_speed }}#" />
+                            <inertial pos="0 0 0" mass="2.011" diaginertia="0.004934016 0.004934016 0.009771652" />
+                            <site type="cylinder" size="#{{ gyro_disc_radius }}# #{{ gyro_disc_height / 2 }}#" pos="0 0 0" rgba="1 0 1 0.7" />
+                            <site type="box" pos="0 0 #{{ gyro_disc_height }}#" size="#{{ gyro_disc_radius / 50 }}# #{{ gyro_disc_radius }}# #{{ gyro_box_size_z / 2 }}#" rgba="0 1 1 1"/>
+                        </body>
+                    </body>
+                </body>
+
+                ${{ roll_gyros_friction = 0 }}$
+
+                <body pos="#{{ -between_gyro_x_distance / 2 }}# 0 #{{ gyros_pair_2_z_position }}#" euler="0 0 #{{ 3 * math.pi / 2 }}#">
+                    <body name="gyro3" euler="#{{ gyro3_zero }}# 0 0">
+                        #{{ basis_site }}#
+                        <joint name="gyro3_act" axis="1 0 0" armature="#{{ gyros_armature }}#" limited="true" range="#{{ gyro3_lower_limit }}# #{{ gyro3_upper_limit }}#" frictionloss="#{{ roll_gyros_friction }}#" />
+                        <inertial pos="0 0 0" mass="2.458" diaginertia="0.0134496 0.008588196 0.01483955" />
+                        <site type="box" size="#{{ gyro_box_size_xy / 2 }}# #{{ gyro_box_size_xy / 2 }}# #{{ gyro_box_size_z / 2 }}#" rgba="0 1 1 0.5" />
+                        <body name="gyro3_wheel">
+                            <joint name="gyro3_m" axis="0 0 1" velocity0="#{{ gyro_speed }}#" />
+                            <inertial pos="0 0 0" mass="2.011" diaginertia="0.004934016 0.004934016 0.009771652" />
+                            <site type="cylinder" size="#{{ gyro_disc_radius }}# #{{ gyro_disc_height / 2 }}#" pos="0 0 0" rgba="1 0 1 0.7" />
+                            <site type="box" pos="0 0 #{{ gyro_disc_height }}#" size="#{{ gyro_disc_radius / 50 }}# #{{ gyro_disc_radius }}# #{{ gyro_box_size_z / 2 }}#" rgba="0 1 1 1"/>
+                        </body>
+                    </body>
+                </body>
+
+                <body pos="#{{ between_gyro_x_distance / 2 }}# 0 #{{ gyros_pair_2_z_position }}#" euler="0 0 #{{ math.pi / 2 }}#">
+                    <body name="gyro4" euler="#{{ gyro4_zero }}# 0 0">
+                        #{{ basis_site }}#
+                        <joint name="gyro4_act" axis="1 0 0" armature="#{{ gyros_armature }}#" limited="true" range="#{{ gyro4_lower_limit }}# #{{ gyro4_upper_limit }}#" frictionloss="#{{ roll_gyros_friction }}#" />
+                        <inertial pos="0 0 0" mass="2.458" diaginertia="0.0134496 0.008588196 0.01483955" />
+                        <site type="box" size="#{{ gyro_box_size_xy / 2 }}# #{{ gyro_box_size_xy / 2 }}# #{{ gyro_box_size_z / 2 }}#" rgba="0 1 1 0.5" />
+                        <body name="gyro4_wheel">
+                            <joint name="gyro4_m" axis="0 0 1" velocity0="#{{ -gyro_speed }}#" />
+                            <inertial pos="0 0 0" mass="2.011" diaginertia="0.004934016 0.004934016 0.009771652" />
+                            <site type="cylinder" size="#{{ gyro_disc_radius }}# #{{ gyro_disc_height / 2 }}#" pos="0 0 0" rgba="1 0 1 0.7" />
+                            <site type="box" pos="0 0 #{{ gyro_disc_height }}#" size="#{{ gyro_disc_radius / 50 }}# #{{ gyro_disc_radius }}# #{{ gyro_box_size_z / 2 }}#" rgba="0 1 1 1"/>
+                        </body>
+                    </body>
+                </body>
+
+                ${{ legs_armature = 2 }}$
+                ${{ legs_friction = 0 }}$
+
+                <!-- LEFT LEG -->
+                <body name="left_leg" pos="0 #{{ between_legs_distance / 2 }}# 0">
+                    <joint name="left_upper_joint" axis="0 1 0" armature="#{{ legs_armature }}#" frictionloss="#{{ legs_friction }}#" />
+                    <inertial pos="0 0.01027 -0.2214" mass="1.59" diaginertia="0.008704007 0.007703296 0.002209976"/>
+                    <site name="left_thigh" type="cylinder" pos="0 0 #{{ -thigh_length / 2 }}#" size="#{{ thigh_radius }}# #{{ thigh_length / 2 }}#" />
+                    <body name="left_lower_part" pos="0 0 #{{ -thigh_length }}#">
+                        <joint name="left_lower_joint" axis="0 1 0" armature="#{{ legs_armature }}#" frictionloss="#{{ legs_friction }}#" />
+                        <inertial pos="0 0 -0.19469" mass="0.75" diaginertia="0.006216238 0.006185340 0.000584330" />
+                        <geom type="capsule" size="#{{ shin_radius }}# #{{ shin_length / 2 }}#" pos="0 0 #{{ -shin_length / 2 }}#" mass="0" rgba="1 1 0 0.5"/>
+                        <site name="left_contact" type="capsule" pos="0 0 #{{ -shin_length / 2 }}#" size="#{{ shin_radius }}# #{{ shin_length / 2 }}#" rgba="0 1 1 1" />
+                    </body>
+                </body>
+
+                <!-- RIGHT LEG -->
+                <body name="right_leg" pos="0 #{{ -between_legs_distance / 2 }}# 0">
+                    <joint name="right_upper_joint" axis="0 1 0" armature="#{{ legs_armature }}#" frictionloss="#{{ legs_friction }}#" />
+                    <inertial pos="0 -0.01027 -0.2214" mass="1.59" diaginertia="0.008704007 0.007703296 0.002209976"/>
+                    <site name="right_thigh" type="cylinder" pos="0 0 #{{ -thigh_length / 2 }}#" size="#{{ thigh_radius }}# #{{ thigh_length / 2 }}#"/>
+                    <body name="right_lower_part" pos="0 0 #{{ -thigh_length }}#">
+                        <joint name="right_lower_joint" axis="0 1 0" armature="#{{ legs_armature }}#" frictionloss="#{{ legs_friction }}#" />
+                        <inertial pos="0 0 -0.19469" mass="0.75" diaginertia="0.006216238 0.006185340 0.000584330" />
+                        <geom type="capsule" size="#{{ shin_radius }}# #{{ shin_length / 2 }}#" pos="0 0 #{{ -shin_length / 2 }}#" mass="0" rgba="1 1 0 0.5"/>
+                        <site name="right_contact" type="capsule" pos="0 0 #{{ -shin_length / 2 }}#" size="#{{ shin_radius }}# #{{ shin_length / 2 }}#" rgba="0 1 1 1" />
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        ${{ gyros_kv = 32 }}$
+
+        <velocity name="gyro1_act" joint="gyro1_act" kv="#{{ gyros_kv }}#" />
+        <velocity name="gyro1_m" joint="gyro1_m" kv="2" />
+
+        <velocity name="gyro2_act" joint="gyro2_act" kv="#{{ gyros_kv }}#" />
+        <velocity name="gyro2_m" joint="gyro2_m" kv="2" />
+
+        <velocity name="gyro3_act" joint="gyro3_act" kv="#{{ gyros_kv }}#" />
+        <velocity name="gyro3_m" joint="gyro3_m" kv="2" />
+
+        <velocity name="gyro4_act" joint="gyro4_act" kv="#{{ gyros_kv }}#" />
+        <velocity name="gyro4_m" joint="gyro4_m" kv="2" />
+
+        <motor name="rod_act1" joint="free" gear="0 0 0 0 0 1" />
+        <motor name="rod_act2" joint="free" gear="1 0 0 0 0 0" />
+
+        <motor name="lt_act" joint="left_upper_joint" />
+        <motor name="ls_act" joint="left_lower_joint" />
+        <motor name="rt_act" joint="right_upper_joint" />
+        <motor name="rs_act" joint="right_lower_joint" />
+    </actuator>
+
+    <sensor>
+        <gyro site="free_site" />
+
+        <jointpos joint="gyro1_act" />
+        <jointvel joint="gyro1_act" />
+
+        <jointpos joint="gyro1_m" />
+        <jointvel joint="gyro1_m" />
+
+        <jointpos joint="gyro2_act" />
+        <jointvel joint="gyro2_act" />
+
+        <jointpos joint="gyro2_m" />
+        <jointvel joint="gyro2_m" />
+
+        <jointpos joint="gyro3_act" />
+
+        <jointpos joint="left_upper_joint" />
+        <jointvel joint="left_upper_joint"/>
+
+        <jointpos joint="left_lower_joint" />
+        <jointvel joint="left_lower_joint"/>
+
+        <jointpos joint="right_upper_joint" />
+        <jointvel joint="right_upper_joint"/>
+
+        <jointpos joint="right_lower_joint" />
+        <jointvel joint="right_lower_joint"/>
+    </sensor>
+
+    <contact>
+        ${{ import itertools }}$
+        ${{ import functools }}$
+        ${{ exclude_list = ['pendulum', 'rod', 'gyro1', 'gyro2', 'gyro3',
+                            'gyro4', 'gyro1_wheel', 'gyro2_wheel', 'gyro3_wheel',
+                            'gyro4_wheel', 'left_leg', 'right_leg', 'left_lower_part', 'right_lower_part'] }}$
+        ${{ exclude_pairs = list(itertools.combinations(exclude_list, 2)) }}$
+        #{{ functools.reduce(lambda a, x: a + '<exclude body1="{}" body2="{}" />'.format(x[0], x[1]) + '\n', exclude_pairs, '') }}#
+    </contact>
+</mujoco>
