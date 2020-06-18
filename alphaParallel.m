@@ -11,36 +11,26 @@ disp(testResult);
 exception = [];
 
 try 
-    nWorkers = 4;
+    nWorkers = 16;
 
     if isempty(gcp('nocreate'))
-        pool = parpool(nWorkers);
+        pool = parpool('local', nWorkers);
     end
 
     futures(1, 1:nWorkers) = parallel.FevalFuture;
     
     % PSIHD x THET x ALPH1 x ALPH2 x COEFFICIENT x ICOEFFICIENT
 
-%     splittedVariable = [ 
-%         -270 270 % PSIHD.
-%     ];
-
     splittedVariable = [ 
-        -30 30 % PSIHD.
+        -270 270 % PSIHD.
     ];
 
     unsplittedVariable = splittedVariable;
 
-%     wholeVariables = [
-%         -90 90 % THET.
-%         -90 90 % ALPH1.
-%         -90 90 % ALPH2.
-%     ];
-
     wholeVariables = [
-        -30 30 % THET.
-        -30 30 % ALPH1.
-        -30 30 % ALPH2.
+        -90 90 % THET.
+        -90 90 % ALPH1.
+        -90 90 % ALPH2.
     ];
 
     index = 1;
@@ -53,9 +43,6 @@ try
         
         index = index + 1;
     end
-
-%     variablesShift = unsplittedVariable + abs(min(unsplittedVariable));
-%     variablesShift = [variablesShift; wholeVariables + abs(min(wholeVariables, [], 2))];
     
     variablesShift = abs(min(unsplittedVariable));
     variablesShift = [variablesShift; abs(min(wholeVariables, [], 2))];
@@ -109,7 +96,7 @@ end
 
 function result = alphaParallelF(variablesRanges, nWorkers, modelParameters, M1, Cs1, Cx1, Gd1, AMTd1)
 
-    nLinearizations = 8;
+    nLinearizations = 32;
 
     assert(size(variablesRanges, 1) == 4);
     assert(rem(nLinearizations, nWorkers) == 0);
@@ -185,7 +172,6 @@ function result = alphaParallelF(variablesRanges, nWorkers, modelParameters, M1,
                     Bw1 = T * Bw1;
 
                     K1 = lqrd(Aw1, Bw1, diag([1, 1, 1, 20, 20, 1]), diag([50, 50]), 0.005);
-%                     K1 = lqrd(Aw1, Bw1, diag([1, 1, 1, 10, 10, 1]), diag([20, 20]), 0.005);
                     K1 = [K1(1, :) K1(2, :)];
 
                     for index5 = 1 : size(K1, 2)

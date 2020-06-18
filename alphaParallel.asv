@@ -1,6 +1,8 @@
-testValue = -22.9;
+testValue = -22.5;
+% testValue = 7.6;
 
-testResult = ceil((testValue + 30) / 7.5000);
+% testResult = floor((testValue + 30) / 7.5000) + 1;
+testResult = floor(((testValue + 30) - (-30 + 30)) / 7.5000) + 1;
 
 disp(testResult);
 
@@ -9,22 +11,18 @@ disp(testResult);
 exception = [];
 
 try 
-    nWorkers = 4;
+    nWorkers = 16;
 
     if isempty(gcp('nocreate'))
-        pool = parpool(nWorkers);
+        pool = parpool('local', nWorkers);
     end
 
     futures(1, 1:nWorkers) = parallel.FevalFuture;
     
     % PSIHD x THET x ALPH1 x ALPH2 x COEFFICIENT x ICOEFFICIENT
 
-%     splittedVariable = [ 
-%         -270 270 % PSIHD.
-%     ];
-
     splittedVariable = [ 
-        -30 30 % PSIHD.
+        -270 270 % PSIHD.
     ];
 
     unsplittedVariable = splittedVariable;
@@ -52,8 +50,14 @@ try
         index = index + 1;
     end
 
-    variablesShift = unsplittedVariable + abs(min(unsplittedVariable));
-    variablesShift = [variablesShift; wholeVariables + abs(min(wholeVariables, [], 2))];
+%     variablesShift = unsplittedVariable + abs(min(unsplittedVariable));
+%     variablesShift = [variablesShift; wholeVariables + abs(min(wholeVariables, [], 2))];
+    
+    variablesShift = abs(min(unsplittedVariable));
+    variablesShift = [variablesShift; abs(min(wholeVariables, [], 2))];
+    
+    shiftedVariables = unsplittedVariable(:, 1) + abs(min(unsplittedVariable(:, 1)));
+    shiftedVariables = [shiftedVariables; wholeVariables(:, 1) + abs(min(wholeVariables(:, 1), [], 2))];
 
     for index = 1 : nWorkers
         futures(1, index) = parfeval(@alphaParallelF, 1, ...
@@ -73,11 +77,16 @@ try
     coefficientsTensor = [];
     variablesDeltas = [];
     
+    nLinearizations = 0;
+    
     for index = 1 : nWorkers
         coefficientsTensor = cat(1, coefficientsTensor, results{index}.coefficientsTensor);
         linearizationPoints = cat(1, linearizationPoints, results{index}.linearizationPoints);
         variablesDeltas = cat(1, variablesDeltas, results{index}.variablesDeltas');
+        nLinearizations = results{index}.nLinearizations;
     end
+    
+    variablesDeltas = variablesDeltas(1, :);
 
     save('coefficientsTensor.mat', 'coefficientsTensor');
     
@@ -171,7 +180,8 @@ function result = alphaParallelF(variablesRanges, nWorkers, modelParameters, M1,
                     Aw1 = T * Aw1 * (T^-1);
                     Bw1 = T * Bw1;
 
-                    K1 = lqrd(Aw1, Bw1, diag([1, 1, 1, 10, 10, 1]), diag([50, 50]), 0.005);
+                    K1 = lqrd(Aw1, Bw1, diag([1, 1, 1, 20, 20, 1]), diag([50, 50]), 0.005);
+%                     K1 = lqrd(Aw1, Bw1, diag([1, 1, 1, 10, 10, 1]), diag([20, 20]), 0.005);
                     K1 = [K1(1, :) K1(2, :)];
 
                     for index5 = 1 : size(K1, 2)
@@ -192,5 +202,6 @@ function result = alphaParallelF(variablesRanges, nWorkers, modelParameters, M1,
     result.coefficientsTensor = coefficientsTensor;
     result.linearizationPoints = linearizationPoints;
     result.variablesDeltas = variablesDeltas;
+    result.nLinearizations = nLinearizations;
 end
 
