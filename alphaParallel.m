@@ -80,6 +80,10 @@ try
     variablesDeltas = variablesDeltas(1, :);
 
     save('coefficientsTensor.mat', 'coefficientsTensor');
+    save('variablesDeltas.mat', 'variablesDeltas');
+    save('variablesShift.mat', 'variablesShift');
+    save('shiftedVariables.mat', 'shiftedVariables');
+    save('nLinearizations.mat', 'nLinearizations');
     
 catch exception
 end
